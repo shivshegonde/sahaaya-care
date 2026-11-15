@@ -1,0 +1,13 @@
+services:
+  sahaaya-care:
+    build: .
+    ports:
+      - "4003:4003"
+    environment:
+      - PORT=4003
+      - PROJECT_ID=ai-builder-sql-copilot
+      - GCP_PROJECT_ID=ai-builder-sql-copilot
+      - GCS_REGION=asia-south1
+      - EMAIL_PROVIDER=mock
+      - DEMO_MODE=true
+    restart: unless-stopped

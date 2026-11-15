@@ -1,0 +1,205 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  color-scheme: light;
+}
+
+/* ==========================================================================
+   WCAG 2.2 AAA High Contrast Accessibility System
+   ========================================================================== */
+html.high-contrast,
+body.high-contrast,
+.high-contrast {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+  color-scheme: dark;
+}
+
+/* 1. Surfaces, Cards, Containers, Headers, Sidebars, Modals */
+body.high-contrast header,
+body.high-contrast nav,
+body.high-contrast main,
+body.high-contrast section,
+body.high-contrast article,
+body.high-contrast aside,
+body.high-contrast dialog,
+body.high-contrast [role="dialog"],
+body.high-contrast [class*="bg-white"],
+body.high-contrast [class*="bg-slate-"],
+body.high-contrast [class*="bg-gray-"],
+body.high-contrast [class*="bg-emerald-50"],
+body.high-contrast [class*="bg-teal-50"],
+body.high-contrast [class*="bg-amber-50"],
+body.high-contrast [class*="bg-rose-50"],
+body.high-contrast [class*="bg-indigo-50"],
+body.high-contrast [class*="bg-purple-50"],
+body.high-contrast [class*="bg-blue-50"] {
+  background-color: #0b0f17 !important;
+  color: #ffffff !important;
+  border-color: #facc15 !important;
+}
+
+/* 2. Text Inversion — Universal elimination of dark/black fonts on dark backgrounds */
+body.high-contrast h1,
+body.high-contrast h2,
+body.high-contrast h3,
+body.high-contrast h4,
+body.high-contrast h5,
+body.high-contrast h6,
+body.high-contrast strong,
+body.high-contrast b,
+body.high-contrast [class*="text-slate-9"],
+body.high-contrast [class*="text-slate-8"],
+body.high-contrast [class*="text-slate-7"],
+body.high-contrast [class*="text-gray-9"],
+body.high-contrast [class*="text-gray-8"],
+body.high-contrast [class*="text-gray-7"],
+body.high-contrast [class*="text-zinc-9"],
+body.high-contrast [class*="text-black"],
+body.high-contrast [class*="text-teal-9"],
+body.high-contrast [class*="text-teal-8"],
+body.high-contrast [class*="text-emerald-9"],
+body.high-contrast [class*="text-emerald-8"],
+body.high-contrast [class*="text-amber-9"],
+body.high-contrast [class*="text-amber-8"],
+body.high-contrast [class*="text-rose-9"],
+body.high-contrast [class*="text-rose-8"],
+body.high-contrast [class*="text-indigo-9"],
+body.high-contrast [class*="text-indigo-8"] {
+  color: #ffffff !important;
+}
+
+/* Secondary & helper texts: high-contrast bright yellow/white */
+body.high-contrast p,
+body.high-contrast span,
+body.high-contrast label,
+body.high-contrast li,
+body.high-contrast td,
+body.high-contrast th,
+body.high-contrast [class*="text-slate-6"],
+body.high-contrast [class*="text-slate-5"],
+body.high-contrast [class*="text-slate-4"],
+body.high-contrast [class*="text-gray-6"],
+body.high-contrast [class*="text-gray-5"],
+body.high-contrast [class*="text-teal-7"],
+body.high-contrast [class*="text-teal-6"],
+body.high-contrast [class*="text-amber-7"],
+body.high-contrast [class*="text-amber-6"],
+body.high-contrast [class*="text-rose-7"],
+body.high-contrast [class*="text-rose-6"] {
+  color: #fef08a !important;
+}
+
+/* 3. Accessible Form Controls (Inputs, Textareas, Selects) */
+body.high-contrast input,
+body.high-contrast textarea,
+body.high-contrast select {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+  border: 2px solid #facc15 !important;
+  border-radius: 0.75rem !important;
+  box-shadow: none !important;
+}
+
+body.high-contrast input::placeholder,
+body.high-contrast textarea::placeholder {
+  color: #94a3b8 !important;
+}
+
+body.high-contrast input:focus,
+body.high-contrast textarea:focus,
+body.high-contrast select:focus {
+  outline: 3px solid #38bdf8 !important;
+  border-color: #38bdf8 !important;
+}
+
+/* 4. Action Buttons & Controls */
+body.high-contrast button {
+  box-shadow: none !important;
+}
+
+/* Primary yellow accent buttons */
+body.high-contrast .bg-amber-400,
+body.high-contrast .bg-amber-500,
+body.high-contrast .bg-teal-600,
+body.high-contrast .bg-teal-700,
+body.high-contrast .bg-emerald-600,
+body.high-contrast .bg-emerald-700 {
+  background-color: #facc15 !important;
+  color: #000000 !important;
+  border: 2px solid #ffffff !important;
+  font-weight: 800 !important;
+}
+
+body.high-contrast .bg-amber-400 *,
+body.high-contrast .bg-amber-500 *,
+body.high-contrast .bg-teal-600 *,
+body.high-contrast .bg-teal-700 *,
+body.high-contrast .bg-emerald-600 *,
+body.high-contrast .bg-emerald-700 * {
+  color: #000000 !important;
+}
+
+/* Secondary outline / neutral buttons */
+body.high-contrast button.bg-white,
+body.high-contrast button.bg-slate-100,
+body.high-contrast button.bg-slate-200,
+body.high-contrast button.border {
+  background-color: #161e2e !important;
+  color: #ffffff !important;
+  border: 2px solid #facc15 !important;
+}
+
+body.high-contrast button:hover {
+  background-color: #fde047 !important;
+  color: #000000 !important;
+}
+
+body.high-contrast button:hover * {
+  color: #000000 !important;
+}
+
+/* Emergency / Danger buttons */
+body.high-contrast .bg-rose-50,
+body.high-contrast .bg-rose-100,
+body.high-contrast .bg-rose-600 {
+  background-color: #b91c1c !important;
+  color: #ffffff !important;
+  border: 2px solid #ffffff !important;
+}
+
+body.high-contrast .bg-rose-50 *,
+body.high-contrast .bg-rose-100 *,
+body.high-contrast .bg-rose-600 * {
+  color: #ffffff !important;
+}
+
+/* Status Badges & Pills in High Contrast */
+body.high-contrast .rounded-full {
+  border: 2px solid #facc15 !important;
+  background-color: #000000 !important;
+  color: #ffffff !important;
+}
+
+/* 5. Typography Anti-Collusion & Overlap Prevention */
+body.high-contrast h1,
+body.high-contrast h2,
+body.high-contrast h3,
+body.high-contrast p {
+  line-height: 1.5 !important;
+  overflow-wrap: break-word !important;
+}
+
+/* 6. Modal Backdrops */
+body.high-contrast .fixed.inset-0 {
+  background-color: rgba(0, 0, 0, 0.9) !important;
+}
+
+/* Elder Dashboard Large Target Helpers */
+.touch-target-large {
+  min-height: 52px;
+  min-width: 52px;
+}

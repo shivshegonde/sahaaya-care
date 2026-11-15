@@ -1,0 +1,57 @@
+{
+  "name": "sahaaya-care",
+  "version": "1.0.0",
+  "description": "Sahaaya Care — Consent-first, AI-assisted elderly care & medication management platform",
+  "main": "server/dist/index.js",
+  "type": "module",
+  "scripts": {
+    "dev:server": "tsx watch server/src/index.ts",
+    "dev:client": "vite --port 3000",
+    "dev": "tsx server/src/dev-runner.ts",
+    "build:server": "tsc -p server/tsconfig.json",
+    "build:client": "vite build",
+    "build": "npm run build:client && npm run build:server",
+    "start": "node server/dist/index.js",
+    "test": "tsx --test tests/**/*.test.ts",
+    "seed": "tsx server/src/db/seed.ts"
+  },
+  "keywords": [
+    "elderly-care",
+    "medication-management",
+    "gemini",
+    "google-cloud",
+    "healthcare-ai"
+  ],
+  "author": "Catalyst PromptSwar Team",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "@google-cloud/datastore": "^11.3.1",
+    "@google/generative-ai": "^0.24.0",
+    "compression": "^1.8.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "jsonwebtoken": "^9.0.2",
+    "lucide-react": "^0.468.0",
+    "nodemailer": "^10.5.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@types/compression": "^1.8.1",
+    "@types/cors": "^2.8.17",
+    "@types/express": "^4.17.21",
+    "@types/jsonwebtoken": "^9.0.7",
+    "@types/node": "^22.10.1",
+    "@types/nodemailer": "^8.0.2",
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "@vitejs/plugin-react": "^4.3.4",
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.4.49",
+    "tailwindcss": "^3.4.16",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2",
+    "vite": "^5.4.11"
+  }
+}

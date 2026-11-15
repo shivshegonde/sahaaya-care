@@ -1,0 +1,237 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Sahaaya Care API",
+    "description": "Production-grade, consent-first elderly care coordination and medication management REST API.",
+    "version": "1.0.0",
+    "contact": {
+      "name": "Shiv Shegonde",
+      "email": "shivshegonde@gmail.com"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://sahaaya-care-sds4thdc6a-el.a.run.app/api/v1",
+      "description": "Production Cloud Run Server"
+    },
+    {
+      "url": "http://localhost:4003/api/v1",
+      "description": "Local Development Server"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "description": "Enter the JWT token received from /auth/login or /auth/register"
+      }
+    },
+    "schemas": {
+      "User": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "format": "uuid" },
+          "email": { "type": "string", "format": "email" },
+          "displayName": { "type": "string" },
+          "roleTitle": { "type": "string" },
+          "preferredLanguage": { "type": "string", "example": "en" }
+        }
+      },
+      "CareProfile": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "owner_user_id": { "type": "string" },
+          "display_name": { "type": "string" },
+          "timezone": { "type": "string", "example": "Asia/Kolkata" },
+          "grace_period_minutes": { "type": "integer", "example": 30 }
+        }
+      },
+      "Medication": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "name": { "type": "string" },
+          "dose_text": { "type": "string" },
+          "form": { "type": "string", "enum": ["Tablet", "Capsule", "Liquid", "Inhaler", "Drops", "Injection"] },
+          "schedule_type": { "type": "string", "enum": ["FIXED_TIMES", "ONCE_DAILY", "WEEKDAYS", "INTERVAL"] },
+          "status": { "type": "string", "enum": ["ACTIVE", "PAUSED", "COMPLETED", "ARCHIVED"] }
+        }
+      },
+      "DoseInstance": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "care_profile_id": { "type": "string" },
+          "medication_id": { "type": "string" },
+          "scheduled_at_utc": { "type": "string", "format": "date-time" },
+          "local_scheduled_at": { "type": "string" },
+          "status": {
+            "type": "string",
+            "enum": [
+              "UPCOMING",
+              "DUE",
+              "ACKNOWLEDGED_TAKEN",
+              "ACKNOWLEDGED_SKIPPED",
+              "UNABLE_TO_TAKE",
+              "OVERDUE_UNCONFIRMED",
+              "CANCELLED"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "paths": {
+    "/auth/register": {
+      "post": {
+        "summary": "Register a new user account",
+        "tags": ["Authentication"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["email", "password", "displayName"],
+                "properties": {
+                  "email": { "type": "string", "format": "email" },
+                  "password": { "type": "string", "minLength": 6 },
+                  "displayName": { "type": "string" },
+                  "roleTitle": { "type": "string", "default": "Family" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "User created with JWT token" },
+          "400": { "description": "Validation error" },
+          "409": { "description": "Email already exists" }
+        }
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "summary": "Authenticate user credentials",
+        "tags": ["Authentication"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["email", "password"],
+                "properties": {
+                  "email": { "type": "string", "format": "email" },
+                  "password": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Authentication successful" },
+          "401": { "description": "Invalid credentials" }
+        }
+      }
+    },
+    "/me": {
+      "get": {
+        "summary": "Get authenticated user profile",
+        "tags": ["Authentication"],
+        "security": [{ "bearerAuth": [] }],
+        "responses": {
+          "200": { "description": "Current user profile" },
+          "401": { "description": "Unauthorized" }
+        }
+      }
+    },
+    "/care-profiles": {
+      "get": {
+        "summary": "List active care profiles for authenticated user",
+        "tags": ["Care Profiles"],
+        "security": [{ "bearerAuth": [] }],
+        "responses": { "200": { "description": "List of care profiles" } }
+      },
+      "post": {
+        "summary": "Create new care profile",
+        "tags": ["Care Profiles"],
+        "security": [{ "bearerAuth": [] }],
+        "responses": { "201": { "description": "Profile created" } }
+      }
+    },
+    "/care-profiles/{profileId}/doses/today": {
+      "get": {
+        "summary": "Fetch today's scheduled medication doses",
+        "tags": ["Doses"],
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          { "name": "profileId", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "responses": { "200": { "description": "Today's doses" } }
+      }
+    },
+    "/doses/{doseId}/acknowledge": {
+      "post": {
+        "summary": "Record that dose was taken",
+        "tags": ["Doses"],
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          { "name": "doseId", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "responses": { "200": { "description": "Dose marked taken" } }
+      }
+    },
+    "/doses/{doseId}/skip": {
+      "post": {
+        "summary": "Record intentional dose skip",
+        "tags": ["Doses"],
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          { "name": "doseId", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "responses": { "200": { "description": "Dose marked skipped" } }
+      }
+    },
+    "/assistant/chat": {
+      "post": {
+        "summary": "Interact with clinically guardrailed Gemini Assistant",
+        "tags": ["AI Assistant"],
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["message", "careProfileId"],
+                "properties": {
+                  "message": { "type": "string" },
+                  "careProfileId": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": { "200": { "description": "AI Assistant response" } }
+      }
+    },
+    "/demo/clock": {
+      "get": {
+        "summary": "Get simulated demo clock status",
+        "tags": ["Demo Controls"],
+        "responses": { "200": { "description": "Clock status" } }
+      }
+    },
+    "/demo/advance-time": {
+      "post": {
+        "summary": "Advance simulated time and trigger reminder transitions",
+        "tags": ["Demo Controls"],
+        "responses": { "200": { "description": "Time advanced" } }
+      }
+    }
+  }
+}
